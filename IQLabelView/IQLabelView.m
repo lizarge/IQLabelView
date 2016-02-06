@@ -1,6 +1,6 @@
 //
 //  IQLabelView.m
-//  Created by kcandr on 17/12/14.
+//  Created by kcandr on 17/12/14. Modified lizarge 
 
 #import "IQLabelView.h"
 #import <QuartzCore/QuartzCore.h>
@@ -270,8 +270,7 @@ static IQLabelView *lastTouchedView;
 
 - (void)hideEditingHandles
 {
-    lastTouchedView = nil;
-    
+   
     isShowingEditingHandles = NO;
     
     if (enableClose)       closeView.hidden = YES;
@@ -280,6 +279,8 @@ static IQLabelView *lastTouchedView;
     [labelTextField resignFirstResponder];
     
     [self refresh];
+   
+    lastTouchedView = nil;
     
     if([delegate respondsToSelector:@selector(labelViewDidHideEditingHandles:)]) {
         [delegate labelViewDidHideEditingHandles:self];
@@ -288,7 +289,9 @@ static IQLabelView *lastTouchedView;
 
 - (void)showEditingHandles
 {
-    [lastTouchedView hideEditingHandles];
+    if (lastTouchedView != nil) {
+        [lastTouchedView hideEditingHandles];
+    }
     
     isShowingEditingHandles = YES;
     
@@ -420,6 +423,8 @@ static IQLabelView *lastTouchedView;
             [delegate labelViewDidEndEditing:self];
         }
     }
+    
+    [labelTextField adjustsWidthToFillItsContents];
 }
 
 #pragma mark - UITextField Delegate
